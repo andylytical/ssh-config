@@ -1,0 +1,152 @@
+# PreferredAuthentications gssapi-with-mic,publickey,password,keyboard-interactive,challenge-response
+
+# Github.com
+Host github.com
+  User git
+  ForwardX11 no
+
+Host gitlab.com
+  User git
+  IdentityFile ~/.ssh/id_gitlab.com
+  ForwardX11 no
+
+
+# CERBERUS
+Host c4
+  Hostname cerberus4.ncsa.illinois.edu
+  PreferredAuthentications keyboard-interactive
+Host c3 cerberus
+  Hostname cerberus3.ncsa.illinois.edu
+  PreferredAuthentications keyboard-interactive
+Host c2
+  Hostname cerberus2.ncsa.illinois.edu
+  ControlMaster no
+  PreferredAuthentications keyboard-interactive
+
+
+# DELTA
+Host dt-*
+  Hostname %h.delta.internal.ncsa.edu
+  ProxyJump cerberus
+  PreferredAuthentications gssapi-with-mic
+
+
+# RADIANT
+Host rad-*
+  Hostname %h.ncsa.illinois.edu
+  ProxyJump cerberus
+
+Host cows
+  #Hostname cows-deploy1.ncsa.illinois.edu
+  Hostname 141.142.200.4
+  ProxyJump cerberus
+  PreferredAuthentications publickey,password
+
+
+# ASD development
+Host git.ncsa git.ncsa.illinois.edu
+  Hostname git.ncsa.illinois.edu
+  User git
+  #PreferredAuthentications publickey,password
+  PreferredAuthentications publickey
+  ForwardX11 no
+
+Host asd-web-*
+  Hostname %h.internal.ncsa.edu
+  ProxyJump cerberus
+  #PreferredAuthentications publickey,password
+  PreferredAuthentications password
+
+Host aloftus*
+  Hostname %h.internal.ncsa.edu
+  ProxyJump cerberus
+
+Host asd-*
+  Hostname %h.internal.ncsa.edu
+  ProxyJump cerberus
+
+Host nile congo kaskaskia
+  Hostname %h-vm.ncsa.uiuc.edu
+  ProxyJump cerberus
+
+Host wiki*
+  Hostname %h.ncsa.illinois.edu
+  ProxyJump cerberus
+
+Host jira*
+  Hostname %h.ncsa.illinois.edu
+  ProxyJump cerberus
+
+Host mysql
+  Hostname aesculus.ncsa.illinois.edu
+  ProxyJump cerberus
+
+Host ldap*
+  Hostname %h.ncsa.illinois.edu
+  ProxyJump cerberus
+
+Host mysql
+  Hostname aesculus.ncsa.illinois.edu
+  ProxyJump cerberus
+
+Host cotton
+  Hostname cotton.ncsa.illinois.edu
+  ProxyJump cerberus
+
+Host calendarsync calsync
+  Hostname calendarsync.internal.ncsa.edu
+  ProxyJump cerberus
+
+
+# ACHE
+Host ache1
+  Hostname ache-bastion-1.ncsa.illinois.edu
+Host ache2
+  Hostname ache-bastion-2.ncsa.illinois.edu
+Host ache-git.ncsa.illinois.edu
+  User git
+  ProxyJump ache2
+  PubkeyAuthentication yes
+  PreferredAuthentications publickey
+
+
+# DELTA
+Host dt-*
+  Hostname %h.delta.internal.ncsa.edu
+  ProxyJump cerberus
+
+
+# ICCP
+Host iccp campuscluster
+  Hostname cc-login1.campuscluster.illinois.edu
+  ProxyJump cerberus
+
+
+# OTHER
+Host web
+  Hostname web.illinois.edu
+  PreferredAuthentications publickey
+Host bonlefelnob
+  Hostname web.illinois.edu
+  PreferredAuthentications publickey
+  User bonlefelnob
+  IdentityFile ~/.ssh/bonlefelnob
+Host ghf glasshalffull
+  Hostname web.illinois.edu
+  PreferredAuthentications publickey
+  User glasshalffull
+  IdentityFile ~/.ssh/glasshalffull
+
+
+# Default settings that apply to all hosts
+Host *
+PreferredAuthentications gssapi-with-mic,publickey,password,keyboard-interactive
+ServerAliveInterval 60
+ServerAliveCountMax 3
+IdentityFile ~/.ssh/id_ed25519
+
+
+# Control Master Connection Setup
+ControlMaster auto
+ControlPath ~/.ssh/cm_socket/%l-%r@%h:%p
+ControlPersist 96h
