@@ -144,8 +144,8 @@ PreferredAuthentications gssapi-with-mic,publickey,password,keyboard-interactive
 ServerAliveInterval 60
 ServerAliveCountMax 3
 IdentityFile ~/.ssh/id_ed25519
-
-
+ 
+ 
 # Control Master Connection Setup
 ControlMaster auto
 ControlPath ~/.ssh/cm_socket/%l-%r@%h:%p
