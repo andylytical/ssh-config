@@ -1,6 +1,4 @@
-# PreferredAuthentications gssapi-with-mic,publickey,password,keyboard-interactive,challenge-response
-
-# Github.com
+# GITHUB
 Host github.com
   User git
   ForwardX11 no
@@ -11,11 +9,35 @@ Host gitlab.com
   ForwardX11 no
 
 
+# ACCESS
+Host kyric
+  Hostname kxc.ccs.uky.edu
+  User aloftus
+  # PreferredAuthentications publickey
+
+Host tacc
+  Hostname stampede3.tacc.utexas.edu
+  User tg803505
+  PreferredAuthentications publickey,password,keyboard-interactive
+
+
+# DELTA
+Host dt-*
+  Hostname %h.delta.internal.ncsa.edu
+  ProxyJump cerberus
+
+Host delta
+  Hostname login.delta.ncsa.illinois.edu
+
+Host dtai deltaai
+  Hostname dtai-login.delta.ncsa.illinois.edu
+
+
 # CERBERUS
-Host c4
+Host c4 cerberus
   Hostname cerberus4.ncsa.illinois.edu
   PreferredAuthentications keyboard-interactive
-Host c3 cerberus
+Host c3
   Hostname cerberus3.ncsa.illinois.edu
   PreferredAuthentications keyboard-interactive
 Host c2
@@ -24,32 +46,30 @@ Host c2
   PreferredAuthentications keyboard-interactive
 
 
-# DELTA
-Host dt-*
-  Hostname %h.delta.internal.ncsa.edu
+# WEB
+Host proxy*
+  Hostname %h.ncsa.illinois.edu
   ProxyJump cerberus
-  PreferredAuthentications gssapi-with-mic
-
-
-# RADIANT
-Host rad-*
+  User root
+Host web1 web2 web4 web5 web6 avl
   Hostname %h.ncsa.illinois.edu
   ProxyJump cerberus
 
-Host cows
-  #Hostname cows-deploy1.ncsa.illinois.edu
-  Hostname 141.142.200.4
+
+# ASD
+Host aloftus* asd-*
+  Hostname %h.internal.ncsa.edu
   ProxyJump cerberus
-  PreferredAuthentications publickey,password
 
+Host its-nagios
+  Hostname %h.ncsa.illinois.edu
+  ProxyJump cerberus
+  PreferredAuthentications gssapi-with-mic
 
-# ASD development
-Host git.ncsa git.ncsa.illinois.edu
-  Hostname git.ncsa.illinois.edu
-  User git
-  #PreferredAuthentications publickey,password
-  PreferredAuthentications publickey
-  ForwardX11 no
+Host ici-telegraf
+  Hostname %h.internal.ncsa.edu
+  ProxyJump cerberus
+  PreferredAuthentications gssapi-with-mic
 
 Host asd-web-*
   Hostname %h.internal.ncsa.edu
@@ -57,45 +77,88 @@ Host asd-web-*
   #PreferredAuthentications publickey,password
   PreferredAuthentications password
 
-Host aloftus*
+Host calendarsync calsync vcs
+  Hostname calendarsync.internal.ncsa.edu
+  ProxyJump cerberus
+
+Host git.ncsa git.ncsa.illinois.edu
+  Hostname git.ncsa.illinois.edu
+  User git
+  #PreferredAuthentications publickey,password
+  PreferredAuthentications publickey
+  ForwardX11 no
+
+Host vcenter
+  Hostname vcenter.internal.ncsa.edu
+  ProxyJump cerberus
+  User root
+
+Host abbvie
+  Hostname wiki.abbvie.ncsa.edu
+  ProxyJump cerberus
+
+Host wiki-p-dev
   Hostname %h.internal.ncsa.edu
   ProxyJump cerberus
 
-Host asd-*
-  Hostname %h.internal.ncsa.edu
+Host ldap2
+  Hostname ldap-prov-test2.internal.ncsa.edu
+  ProxyJump cerberus
+  PreferredAuthentications gssapi-with-mic,password
+Host ldap1
+  Hostname ldap-prov01.internal.ncsa.edu
+  ProxyJump cerberus
+  PreferredAuthentications gssapi-with-mic,password
+Host ldapmail
+  Hostname %h.ncsa.illinois.edu
+  ProxyJump cerberus
+  User root
+
+Host wiki* jira* ldap* help* cmdb* kblum-wiki kblum-jira
+  Hostname %h.ncsa.illinois.edu
   ProxyJump cerberus
 
+# KERBEROS
 Host nile congo kaskaskia
   Hostname %h-vm.ncsa.uiuc.edu
   ProxyJump cerberus
 
-Host wiki*
+Host ncsa-krb*
+  Hostname %h.ncsa.uiuc.edu
+  ProxyJump cerberus
+
+
+# AFS / CRASHPLAN / STORAGE SERVERS
+Host cotton crashplan mylar paper papyrus parchment tyvek vellum
   Hostname %h.ncsa.illinois.edu
   ProxyJump cerberus
+  PreferredAuthentications gssapi-with-mic,password,keyboard-interactive
+  HostKeyAlgorithms=+ssh-dss
 
-Host jira*
+
+# MAIL
+Host relays outbound-relays
+  Hostname outbound-relays.ncsa.illinois.edu
+  ProxyJump cerberus
+  PreferredAuthentications gssapi-with-mic,password
+# Host pop
+#   Hostname pop.ncsa.uiuc.edu
+#   KexAlgorithms +diffie-hellman-group-exchange-sha1,diffie-hellman-group1-sha1
+#   Ciphers +aes128-cbc,3des-cbc,blowfish-cbc,cast128-cbc,arcfour,aes192-cbc,aes256-cbc,rijndael-cbc@lysator.liu.se
+#   ProxyJump cerberus
+#   User root
+Host ldapmail
+Host proxy redirect proxy01
+  Hostname proxy-01.ncsa.illinois.edu
+  ProxyJump cerberus
+  PreferredAuthentications gssapi-with-mic,password
+
+
+# MYSQL
+Host aesculus orthanc mysql
   Hostname %h.ncsa.illinois.edu
   ProxyJump cerberus
-
-Host mysql
-  Hostname aesculus.ncsa.illinois.edu
-  ProxyJump cerberus
-
-Host ldap*
-  Hostname %h.ncsa.illinois.edu
-  ProxyJump cerberus
-
-Host mysql
-  Hostname aesculus.ncsa.illinois.edu
-  ProxyJump cerberus
-
-Host cotton
-  Hostname cotton.ncsa.illinois.edu
-  ProxyJump cerberus
-
-Host calendarsync calsync
-  Hostname calendarsync.internal.ncsa.edu
-  ProxyJump cerberus
+  HostKeyAlgorithms=+ssh-rsa
 
 
 # ACHE
@@ -110,15 +173,15 @@ Host ache-git.ncsa.illinois.edu
   PreferredAuthentications publickey
 
 
-# DELTA
-Host dt-*
-  Hostname %h.delta.internal.ncsa.edu
-  ProxyJump cerberus
-
-
 # ICCP
 Host iccp campuscluster
   Hostname cc-login1.campuscluster.illinois.edu
+  ProxyJump cerberus
+
+
+# RADIANT
+Host rad-*
+  Hostname %h.ncsa.illinois.edu
   ProxyJump cerberus
 
 
@@ -140,6 +203,7 @@ Host ghf glasshalffull
 
 # Default settings that apply to all hosts
 Host *
+# PreferredAuthentications gssapi-with-mic,publickey,password,keyboard-interactive,challenge-response
 PreferredAuthentications gssapi-with-mic,publickey,password,keyboard-interactive
 ServerAliveInterval 60
 ServerAliveCountMax 3
