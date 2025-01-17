@@ -1,3 +1,16 @@
+# CERBERUS
+Host c4 cerberus
+  Hostname cerberus4.ncsa.illinois.edu
+  PreferredAuthentications keyboard-interactive
+Host c3
+  Hostname cerberus3.ncsa.illinois.edu
+  PreferredAuthentications keyboard-interactive
+Host c2
+  Hostname cerberus2.ncsa.illinois.edu
+  ControlMaster no
+  PreferredAuthentications keyboard-interactive
+
+
 # GITHUB
 Host github.com
   User git
@@ -33,24 +46,15 @@ Host dtai deltaai
   Hostname dtai-login.delta.ncsa.illinois.edu
 
 
-# CERBERUS
-Host c4 cerberus
-  Hostname cerberus4.ncsa.illinois.edu
-  PreferredAuthentications keyboard-interactive
-Host c3
-  Hostname cerberus3.ncsa.illinois.edu
-  PreferredAuthentications keyboard-interactive
-Host c2
-  Hostname cerberus2.ncsa.illinois.edu
-  ControlMaster no
-  PreferredAuthentications keyboard-interactive
-
-
 # WEB
-Host proxy*
-  Hostname %h.ncsa.illinois.edu
+# Host proxy*
+#   Hostname %h.ncsa.illinois.edu
+#   ProxyJump cerberus
+#   User root
+Host proxy redirect proxy01
+  Hostname proxy-01.ncsa.illinois.edu
   ProxyJump cerberus
-  User root
+  PreferredAuthentications gssapi-with-mic,password
 Host web1 web2 web4 web5 web6 avl
   Hostname %h.ncsa.illinois.edu
   ProxyJump cerberus
@@ -101,14 +105,14 @@ Host wiki-p-dev
   Hostname %h.internal.ncsa.edu
   ProxyJump cerberus
 
-Host ldap2
-  Hostname ldap-prov-test2.internal.ncsa.edu
-  ProxyJump cerberus
-  PreferredAuthentications gssapi-with-mic,password
-Host ldap1
-  Hostname ldap-prov01.internal.ncsa.edu
-  ProxyJump cerberus
-  PreferredAuthentications gssapi-with-mic,password
+#Host ldap2
+#  Hostname ldap-prov-test2.internal.ncsa.edu
+#  ProxyJump cerberus
+#  PreferredAuthentications gssapi-with-mic,password
+#Host ldap1
+#  Hostname ldap-prov01.internal.ncsa.edu
+#  ProxyJump cerberus
+#  PreferredAuthentications gssapi-with-mic,password
 Host ldapmail
   Hostname %h.ncsa.illinois.edu
   ProxyJump cerberus
@@ -141,17 +145,12 @@ Host relays outbound-relays
   Hostname outbound-relays.ncsa.illinois.edu
   ProxyJump cerberus
   PreferredAuthentications gssapi-with-mic,password
-# Host pop
-#   Hostname pop.ncsa.uiuc.edu
-#   KexAlgorithms +diffie-hellman-group-exchange-sha1,diffie-hellman-group1-sha1
-#   Ciphers +aes128-cbc,3des-cbc,blowfish-cbc,cast128-cbc,arcfour,aes192-cbc,aes256-cbc,rijndael-cbc@lysator.liu.se
-#   ProxyJump cerberus
-#   User root
-Host ldapmail
-Host proxy redirect proxy01
-  Hostname proxy-01.ncsa.illinois.edu
+Host pop
+  Hostname pop.ncsa.uiuc.edu
+  KexAlgorithms +diffie-hellman-group-exchange-sha1,diffie-hellman-group1-sha1
+  Ciphers +aes128-cbc,3des-cbc,aes192-cbc,aes256-cbc
   ProxyJump cerberus
-  PreferredAuthentications gssapi-with-mic,password
+  User root
 
 
 # MYSQL
@@ -208,7 +207,10 @@ PreferredAuthentications gssapi-with-mic,publickey,password,keyboard-interactive
 ServerAliveInterval 60
 ServerAliveCountMax 3
 IdentityFile ~/.ssh/id_ed25519
- 
+
+# from https://wiki.ncsa.illinois.edu/pages/viewpage.action?pageId=414810173
+CanonicalizeHostname yes
+CanonicalDomains ncsa.illinois.edu
  
 # Control Master Connection Setup
 ControlMaster auto
